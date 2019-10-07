@@ -60,8 +60,7 @@ var tasks = {
         environment = extend({}, configuration, localConfiguration);
 
         for (var pathIndex in environment.paths) {
-            environment.paths[pathIndex] = tasks.environmentPathPrefix(
-                environment.paths[pathIndex]);
+            environment.paths[pathIndex] = tasks.environmentPathPrefix(environment.paths[pathIndex]);
         }
 
         if (environment.javascriptsGroups) {
@@ -69,14 +68,11 @@ var tasks = {
             environment.javascriptsGroups = {};
 
             for (var pathGroupIndex in tmp) {
-                environment.javascriptsGroups[tasks.environmentPathPrefix(
-                    pathGroupIndex)] = [];
+                environment.javascriptsGroups[tasks.environmentPathPrefix(pathGroupIndex)] = [];
 
                 for (var pathIndex in tmp[pathGroupIndex]) {
-                    environment.javascriptsGroups[tasks.environmentPathPrefix(
-                            pathGroupIndex)]
-                        .push(tasks.environmentPathPrefix(tmp[
-                            pathGroupIndex][pathIndex]));
+                    environment.javascriptsGroups[tasks.environmentPathPrefix(pathGroupIndex)]
+                        .push(tasks.environmentPathPrefix(tmp[pathGroupIndex][pathIndex]));
                 }
             }
         }
@@ -268,13 +264,9 @@ var tasks = {
                     .pipe(concat(outputFilePath))
                     .pipe(sourcemaps.init())
                     .pipe(babel())
-                    .pipe(
-                        uglify(outputFilePath)
-                            .on('error', function(error){
-                                console.log(error);
-                                notify(error.cause.message + '(' + error.fileName + ')', false);
-                            })
-                    )
+                    .pipe(uglify().on('error', function(error){
+                        notify(error.cause.message + '(' + error.fileName + ')', false);
+                    }))
                     .pipe(sourcemaps.write('.'))
                     .pipe(gulp.dest(dirPath));
             }
@@ -310,29 +302,34 @@ var tasks = {
         }
     },
 
-    buildJS : function()
+    buildJS : function(callback)
     {
         tasks.defineEnvironment();
 
         for (var mainFile in environment.javascriptsGroups) {
             tasks.buildFromPath(environment.javascriptsGroups[mainFile][0]);
         }
+
+        callback();
     },
 
-    buildCSS : function()
+    buildCSS : function(callback)
     {
         tasks.defineEnvironment();
 
         for (var index in environment.stylesheetsGroups) {
             tasks.buildFromPath(environment.stylesheetsGroups[index].files[0]);
         }
+
+        callback();
     },
 
-    build : function()
+    build : function(callback)
     {
         tasks.defineEnvironment();
         tasks.buildJS();
         tasks.buildCSS();
+        callback();
     },
 
     buildFromPath : function(filePath)
@@ -347,7 +344,7 @@ var tasks = {
  * Gulp Tasks (gulp <task> -e <environment>)
  */
 
-gulp.task('watch', tasks.watch);
-gulp.task('build', tasks.build);
-gulp.task('build-js', tasks.buildJS);
-gulp.task('build-css', tasks.buildCSS);
+exports.watch = tasks.watch;
+exports.build = tasks.build;
+exports.buildJs = tasks.buildJS;
+exports.buildCss = tasks.buildCSS;

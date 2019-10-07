@@ -10,5 +10,5 @@
 
 # Utilisation
 
-- Se placer dans le dossier `gulp` (pas le dossier copié)
+- Se placer dans le dossier du projet gulp `gulp`
 - Exécuter `gulp watch -e <nom-du-dossier>` (pas besoin de ../, Gulp recherche dans le dossier parent)

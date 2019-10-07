@@ -1,0 +1,21 @@
+{
+  "javascriptsGroups": {
+    "minified-file.js": [
+      "source-files.js"
+    ]
+  },
+  "stylesheetsGroups": [
+    {
+      "parent" : "file-to-compile.scss",
+      "destination" : "compiled-file.css",
+      "files" : [
+        "files-to-watch.scss"
+      ]
+    }
+  ],
+  "options" : {
+    "minifyCss" : {
+      "advanced": true
+    }
+  }
+}

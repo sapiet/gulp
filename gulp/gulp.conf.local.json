@@ -1,0 +1,11 @@
+{
+  "host" : "https://my-app.wip",
+  "browser": "google-chrome",
+  "paths" : [
+    "**/*.scss",
+    "**/*.js"
+  ],
+  "scss"          : true,
+  "js"            : true,
+  "browserSync"   : true
+}

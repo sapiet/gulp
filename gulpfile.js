@@ -50,7 +50,7 @@ var tasks = {
      */
     defineEnvironment: function()
     {
-        environmentPath = '../' + argv.e + '/';
+        environmentPath = argv.e;
         var configurationFilePath = environmentPath + 'gulp/gulp.conf.json';
         var localConfigurationFilePath = environmentPath + 'gulp/gulp.conf.local.json';
 
@@ -310,7 +310,9 @@ var tasks = {
             tasks.buildFromPath(environment.javascriptsGroups[mainFile][0]);
         }
 
-        callback();
+        if (callback) {
+            callback();
+        }
     },
 
     buildCSS : function(callback)
@@ -321,7 +323,9 @@ var tasks = {
             tasks.buildFromPath(environment.stylesheetsGroups[index].files[0]);
         }
 
-        callback();
+        if (callback) {
+            callback();
+        }
     },
 
     build : function(callback)
@@ -329,7 +333,10 @@ var tasks = {
         tasks.defineEnvironment();
         tasks.buildJS();
         tasks.buildCSS();
-        callback();
+
+        if (callback) {
+            callback();
+        }
     },
 
     buildFromPath : function(filePath)
